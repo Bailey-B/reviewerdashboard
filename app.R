@@ -8,10 +8,10 @@ library(lubridate)
 library(readr)
 
 # Import & Format Data
-master <- read_csv("dummymaster.csv")
+master <- read.csv("dummymaster.csv")
 mastercolumns2hide <- c(2, 9, 10)
-articlesreviewed <- read_csv("dummyarticlesreviewed.csv")
-articlesauthored <- read_csv("dummyarticlesauthored.csv")
+articlesreviewed <- read.csv("dummyarticlesreviewed.csv")
+articlesauthored <- read.csv("dummyarticlesauthored.csv")
 reviewercolumns2hide <- c(3)
 
 # Create UI
