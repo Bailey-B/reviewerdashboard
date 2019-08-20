@@ -12,7 +12,6 @@ articlesreviewed <- read.csv("dummyarticlesreviewed.csv", fileEncoding = "UTF-8-
 articlesauthored <- read.csv("dummyarticlesauthored.csv", fileEncoding = "UTF-8-BOM")
 reviewercolumns2hide <- c(3)
 
-# Create UI
 ui <- 
   fluidPage(
     titlePanel("Reviewer Pool"),
