@@ -4,13 +4,12 @@ library(tidyverse)
 library(DT)
 library(shiny)
 library(shinythemes)
-library(readr)
 
 # Import & Format Data
-master <- read.csv("dummymaster.csv")
+master <- read.csv("dummymaster.csv", fileEncoding = "UTF-8-BOM")
 mastercolumns2hide <- c(2, 9, 10)
-articlesreviewed <- read.csv("dummyarticlesreviewed.csv")
-articlesauthored <- read.csv("dummyarticlesauthored.csv")
+articlesreviewed <- read.csv("dummyarticlesreviewed.csv", fileEncoding = "UTF-8-BOM")
+articlesauthored <- read.csv("dummyarticlesauthored.csv", fileEncoding = "UTF-8-BOM")
 reviewercolumns2hide <- c(3)
 
 # Create UI
@@ -32,7 +31,7 @@ ui <-
 
 
 server <- function(input, output, session) {
-  
+
   output$master <- renderDataTable({
     datatable(master,
               options = list(pageLength = nrow(master),
@@ -43,16 +42,15 @@ server <- function(input, output, session) {
                              ),
               filter = "top",
               rownames = FALSE,
-              selection = "multiple"
+              selection = list(mode = "multiple", target = "row")
               )
     })
 
 
   output$articlesreviewed <- renderDataTable({
-    selectedORCIDS <- master[input$master_rows_selected, match("ORCID", names(master))] 
-    datatable(articlesreviewed[articlesreviewed$ORCID == selectedORCIDS,],
-              options = list(pageLength = nrow(articlesreviewed),
-                             lengthChange = FALSE,
+    selectedrows <- master[input$master_rows_selected,]
+    datatable(articlesreviewed[articlesreviewed$ORCID %in% selectedrows$ORCID,],
+              options = list(lengthChange = FALSE,
                              searching = FALSE,
                              paging = FALSE,
                              columnDefs = list(list(visible = FALSE, targets = reviewercolumns2hide))
@@ -63,10 +61,9 @@ server <- function(input, output, session) {
     })
 
   output$articlesauthored <- renderDataTable({
-    selectedORCIDS <- master[input$master_rows_selected, match("ORCID", names(master))] 
-    datatable(articlesauthored[articlesauthored$ORCID == selectedORCIDS,],
-              options = list(pageLength = nrow(articlesauthored),
-                             lengthChange = FALSE,
+    selectedrows <- master[input$master_rows_selected,]
+    datatable(articlesauthored[articlesauthored$ORCID %in% selectedrows$ORCID,],
+              options = list(lengthChange = FALSE,
                              searching = FALSE,
                              paging = FALSE,
                              columnDefs = list(list(visible = FALSE, targets = reviewercolumns2hide))
